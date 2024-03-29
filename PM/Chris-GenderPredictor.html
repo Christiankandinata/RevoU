@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gender Predictor</title>
+  <style>
+    /* Add some basic styling */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    img {
+      max-width: 200px;
+      height: auto;
+      display: none;
+      /* Initially hide the image */
+    }
+  </style>
+</head>
+<body>
+  <h1>Gender Predictor</h1>
+  <input type="text" id="nameInput" placeholder="Enter name">
+  <button onclick="predictGender()">Predict Gender</button>
+  <p id="genderResult"></p>
+  <img id="genderImage" src="" alt="Gender illustration">
+  <script>
+    async function predictGender() {
+      const name = document.getElementById('nameInput').value;
+      const url = `https://api.genderize.io/?name=${name}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const gender = data.gender;
+        const genderResult = document.getElementById('genderResult');
+        const genderImage = document.getElementById('genderImage');
+
+        // Update text result
+        if (gender === 'male') {
+          genderResult.textContent = `${name} is predicted to be male.`;
+          genderImage.src = 'https://www.nicepng.com/png/detail/49-498471_this-is-a-logo-that-represents-the-male.png'; // Replace with actual URL
+        } else if (gender === 'female') {
+          genderResult.textContent = `${name} is predicted to be female.`;
+          genderImage.src = 'https://clipart-library.com/img/750543.png'; // Replace with actual URL
+        } else {
+          genderResult.textContent = `Gender prediction for ${name} is null or unavailable.`;
+
+          genderImage.src = 'https://i.pinimg.com/originals/a1/85/fb/a185fb1e19ce1225d619ba36a0f85b29.png'
+        }
+
+        // Show image
+        genderImage.style.display = 'block';
+      } catch (error) {
+        console.error('Error:', error);
+        // Display error message to the user
+        document.getElementById('genderResult').textContent = 'An error occurred while predicting gender.';
+      }
+    }
+  </script>
+</body>
+</html>
